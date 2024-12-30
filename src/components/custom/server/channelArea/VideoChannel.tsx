@@ -51,9 +51,6 @@ const VideoChannel = ({ data }: { data: VideoProps[] }) => {
                         }}
                       />
                     </NaveTooll>
-                    <NaveTooll serverName="Change Type">
-                      <Plus className="w-6 h-6 text-zinc-800 cursor-pointer dark:text-zinc-200 dark:bg-green-900 bg-green-900/50 p-1 rounded-md" />
-                    </NaveTooll>
               </div>
               </div>
               </div>

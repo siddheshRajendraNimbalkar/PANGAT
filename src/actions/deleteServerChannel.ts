@@ -1,6 +1,5 @@
 "use server"
 
-import React from 'react'
 import currentUser from './currentUser'
 import db from '@/lib/db';
 
@@ -10,6 +9,19 @@ const deleteServerChannel = async(channelId:any) => {
         return {success:false}
     }
     try {
+        const channel = await db.channel.findFirst({
+            where:{
+                id:channelId
+            }
+        })
+        if(!channel){
+            return {success:false,message:"channel not found"}
+        }
+        console.log(channel.name)
+        if(channel.name.toLocaleLowerCase() == "general"){
+            return {success:false,message:"You can't delete general channel"}
+        }
+
         const deleteChannel = await db.channel.delete({
             where:{
                 id:channelId

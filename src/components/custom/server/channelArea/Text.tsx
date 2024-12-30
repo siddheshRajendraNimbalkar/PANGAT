@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import { NaveTooll } from '../../NaveTooll'
 import deleteServerChannel from '@/actions/deleteServerChannel'
+import { DropdownMenu, DropdownMenuItem } from '@radix-ui/react-dropdown-menu'
 
 interface TextProps {
   name: string
@@ -18,7 +19,7 @@ const Text = ({ data }: { data: TextProps[] }) => {
     <div>
       <h1 className="text-lg text-zinc-500 dark:text-zinc-400 bg-zinc-300 dark:bg-zinc-900/50 pt-2 pb-2 flex justify-between items-center px-2">
         <div>
-          Audio Channels
+          Text Channels
         </div>
         <Hash className="w-6 h-6 text-zinc-800 dark:text-zinc-200" />
       </h1>
@@ -45,9 +46,6 @@ const Text = ({ data }: { data: TextProps[] }) => {
                           })
                         }}
                       />
-                    </NaveTooll>
-                    <NaveTooll serverName="Change Type">
-                      <Plus className="w-6 h-6 text-zinc-800 cursor-pointer dark:text-zinc-200 dark:bg-green-900 bg-green-900/50 p-1 rounded-md" />
                     </NaveTooll>
                   </div>
                 </div>

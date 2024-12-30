@@ -17,7 +17,7 @@ const page = async({params}:any) => {
   })
 
   if(!chanel){
-    <div className='text-4xl'>
+    return <div className='text-4xl'>
       Not Found
     </div>
   }
