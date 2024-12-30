@@ -1,5 +1,6 @@
 import db from '@/lib/db'
 import React from 'react'
+import Chats from '@/components/chats/Chats'
 
 const page = async({params}:any) => {
   const {subChannel} = params
@@ -25,6 +26,7 @@ const page = async({params}:any) => {
   return (
     <div className='text-4xl h-full w-full bg-zinc-200 dark:bg-zinc-800'>
       {chanel?.name}
+      <Chats />
     </div>
   )
 
