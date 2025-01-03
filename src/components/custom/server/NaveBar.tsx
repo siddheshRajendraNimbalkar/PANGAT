@@ -9,6 +9,7 @@ import Text from "./channelArea/Text";
 import Audio from "./channelArea/Audio";
 import VideoChannel from "./channelArea/VideoChannel";
 import Member from "./channelArea/Member";
+import { channel } from "diagnostics_channel";
 
 interface ServerNavBAr {
     serverID: string,
@@ -129,13 +130,40 @@ const NaveBar = async ({ serverID, userId }: ServerNavBAr) => {
                             <Text  data={textChannels?.map((channel) => ({serverID:serverID,name: channel.name, id: channel.id}))} />
                             <Audio data={audioChannels?.map((channel) => ({serverId:serverID,name: channel.name, id: channel.id}))}/>
                             <VideoChannel data={videoChannels?.map((channel) => ({serverId:serverID,name: channel.name, id: channel.id}))}/>
-                            <Member data={
-                                server?.member.map((member) => ({
-                                    id: member.id,
-                                    name: member.profile.name,
-                                    role: member.role
-                                }))
-                            }/>
+                            <Member 
+                                data={server?.member
+                                    .filter(member => {
+                                        if (member.profileId === userId) {
+                                            return true
+                                        }
+                                    })
+                                    .map(member => ({
+                                        id: member.id,
+                                        name: member.profile.name,
+                                        role: member.role
+                                    }))
+                                }
+                                channelId={serverID}
+                                convesation={false}
+                            />
+                            <Member 
+                                data={
+                                    server?.member
+                                        .filter(member => {
+                                            if (member.profileId != userId) {
+                                                console.log(member.profileId, userId)
+                                                return true
+                                            }
+                                        })
+                                        .map(member => ({
+                                            id: member.id,
+                                            name: member.profile.name,
+                                            role: member.role
+                                        }))
+                                }
+                                convesation={true}
+                                channelId={serverID}
+                            />
                             </div>
                     </div>
                 </ScrollArea>
