@@ -8,6 +8,7 @@ package db
 import (
 	"context"
 	"database/sql"
+	"time"
 )
 
 const createConversationMessage = `-- name: CreateConversationMessage :one
@@ -22,7 +23,7 @@ type CreateConversationMessageParams struct {
 	FileUrl        sql.NullString `db:"fileUrl"`
 	Deleted        sql.NullBool   `db:"deleted"`
 	DeletedAt      sql.NullTime   `db:"deletedAt"`
-	CreatedAt      sql.NullTime   `db:"createdAt"`
+	CreatedAt      time.Time      `db:"createdAt"`
 	UpdatedAt      sql.NullTime   `db:"updatedAt"`
 }
 

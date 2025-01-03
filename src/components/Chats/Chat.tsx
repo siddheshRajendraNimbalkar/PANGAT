@@ -1,6 +1,7 @@
 import React from 'react'
 import ChatHeader from './ChatHeader'
 import ChatBody from './ChatBody'
+import axios from 'axios'
 
 interface ChatProps {
   profile1: {
@@ -20,7 +21,10 @@ interface ChatProps {
   }
 }
 
+
+
 const Chat = ({ profile1, profile2, channel }: ChatProps) => {
+  
   return (
     <div>
       <ChatHeader 

@@ -8,6 +8,7 @@ package db
 import (
 	"context"
 	"database/sql"
+	"time"
 )
 
 const createMessage = `-- name: CreateMessage :one
@@ -19,11 +20,11 @@ RETURNING id, content, "fileUrl", "memberId", "channelId", deleted, "deletedAt",
 type CreateMessageParams struct {
 	Content   string         `db:"content"`
 	FileUrl   sql.NullString `db:"fileUrl"`
-	MemberId  int64          `db:"memberId"`
-	ChannelId int64          `db:"channelId"`
+	MemberId  string         `db:"memberId"`
+	ChannelId string         `db:"channelId"`
 	Deleted   sql.NullBool   `db:"deleted"`
 	DeletedAt sql.NullTime   `db:"deletedAt"`
-	CreatedAt sql.NullTime   `db:"createdAt"`
+	CreatedAt time.Time      `db:"createdAt"`
 	UpdatedAt sql.NullTime   `db:"updatedAt"`
 }
 
@@ -91,7 +92,7 @@ SELECT id, content, "fileUrl", "memberId", "channelId", deleted, "deletedAt", "c
 WHERE "channelId" = $1
 `
 
-func (q *Queries) GetMessagesByChannelId(ctx context.Context, channelid int64) ([]Message, error) {
+func (q *Queries) GetMessagesByChannelId(ctx context.Context, channelid string) ([]Message, error) {
 	rows, err := q.db.QueryContext(ctx, getMessagesByChannelId, channelid)
 	if err != nil {
 		return nil, err
@@ -129,7 +130,7 @@ SELECT id, content, "fileUrl", "memberId", "channelId", deleted, "deletedAt", "c
 WHERE "memberId" = $1
 `
 
-func (q *Queries) GetMessagesByMemberId(ctx context.Context, memberid int64) ([]Message, error) {
+func (q *Queries) GetMessagesByMemberId(ctx context.Context, memberid string) ([]Message, error) {
 	rows, err := q.db.QueryContext(ctx, getMessagesByMemberId, memberid)
 	if err != nil {
 		return nil, err

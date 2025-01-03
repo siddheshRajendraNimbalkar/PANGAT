@@ -11,3 +11,8 @@ WHERE ("memberIdOne" = $1 AND "memberIdTwo" = $2)
 -- name: GetConversationsByMemberId :many
 SELECT * FROM "conversation"
 WHERE "memberIdOne" = $1 OR "memberIdTwo" = $1;
+
+-- name: UpdateConversationMemberName :exec
+UPDATE "conversation"
+SET "memberNameOne" = $2, "memberNameTwo" = $3
+WHERE "id" = $1;

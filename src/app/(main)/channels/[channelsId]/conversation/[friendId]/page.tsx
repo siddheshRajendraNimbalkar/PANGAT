@@ -1,7 +1,9 @@
+import axios from 'axios';
 import currentUser from '@/actions/currentUser';
 import Chat from '@/components/Chats/Chat';
 import db from '@/lib/db';
 import { RedirectToSignIn } from '@clerk/nextjs';
+import { Axis3DIcon } from 'lucide-react';
 
 const Page = async ({ params }: { params: { friendId: string; channelsId: string } }) => {
   const profile1 = await currentUser();
@@ -34,6 +36,23 @@ const Page = async ({ params }: { params: { friendId: string; channelsId: string
 
   if (!channel) {
     return <RedirectToSignIn redirectUrl="/" />;
+  }
+  
+  try {
+    const res = await axios.post(`${process.env.GOSERVER}/conversation`, {
+      channelId: channel.id,
+      memberIdOne: profile1.id,
+      memberIdTwo: profile2.id,
+      memberNameOne: profile1.name,
+      memberNameTwo: profile2.name,
+    });
+
+    if (res.data.success == true) {
+      console.log(res.data.data);
+    }
+  } catch (err) {
+    console.error('Error in creating/retrieving conversation:', err)
+    return <div>Error in creating/retrieving conversation</div>
   }
 
   return (

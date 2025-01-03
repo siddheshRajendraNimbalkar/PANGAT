@@ -6,15 +6,16 @@ package db
 
 import (
 	"database/sql"
+	"time"
 )
 
 type Conversation struct {
-	ID            int64        `db:"id"`
-	MemberIdOne   int64        `db:"memberIdOne"`
-	MemberNameOne string       `db:"memberNameOne"`
-	MemberIdTwo   int64        `db:"memberIdTwo"`
-	MemberNameTwo string       `db:"memberNameTwo"`
-	CreatedAt     sql.NullTime `db:"createdAt"`
+	ID            int64     `db:"id"`
+	MemberIdOne   string    `db:"memberIdOne"`
+	MemberNameOne string    `db:"memberNameOne"`
+	MemberIdTwo   string    `db:"memberIdTwo"`
+	MemberNameTwo string    `db:"memberNameTwo"`
+	CreatedAt     time.Time `db:"createdAt"`
 }
 
 type ConversationMessage struct {
@@ -24,7 +25,7 @@ type ConversationMessage struct {
 	FileUrl        sql.NullString `db:"fileUrl"`
 	Deleted        sql.NullBool   `db:"deleted"`
 	DeletedAt      sql.NullTime   `db:"deletedAt"`
-	CreatedAt      sql.NullTime   `db:"createdAt"`
+	CreatedAt      time.Time      `db:"createdAt"`
 	UpdatedAt      sql.NullTime   `db:"updatedAt"`
 }
 
@@ -32,10 +33,10 @@ type Message struct {
 	ID        int64          `db:"id"`
 	Content   string         `db:"content"`
 	FileUrl   sql.NullString `db:"fileUrl"`
-	MemberId  int64          `db:"memberId"`
-	ChannelId int64          `db:"channelId"`
+	MemberId  string         `db:"memberId"`
+	ChannelId string         `db:"channelId"`
 	Deleted   sql.NullBool   `db:"deleted"`
 	DeletedAt sql.NullTime   `db:"deletedAt"`
-	CreatedAt sql.NullTime   `db:"createdAt"`
+	CreatedAt time.Time      `db:"createdAt"`
 	UpdatedAt sql.NullTime   `db:"updatedAt"`
 }

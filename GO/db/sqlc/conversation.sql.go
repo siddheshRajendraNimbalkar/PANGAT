@@ -7,7 +7,7 @@ package db
 
 import (
 	"context"
-	"database/sql"
+	"time"
 )
 
 const createConversation = `-- name: CreateConversation :one
@@ -17,11 +17,11 @@ RETURNING id, "memberIdOne", "memberNameOne", "memberIdTwo", "memberNameTwo", "c
 `
 
 type CreateConversationParams struct {
-	MemberIdOne   int64        `db:"memberIdOne"`
-	MemberNameOne string       `db:"memberNameOne"`
-	MemberIdTwo   int64        `db:"memberIdTwo"`
-	MemberNameTwo string       `db:"memberNameTwo"`
-	CreatedAt     sql.NullTime `db:"createdAt"`
+	MemberIdOne   string    `db:"memberIdOne"`
+	MemberNameOne string    `db:"memberNameOne"`
+	MemberIdTwo   string    `db:"memberIdTwo"`
+	MemberNameTwo string    `db:"memberNameTwo"`
+	CreatedAt     time.Time `db:"createdAt"`
 }
 
 func (q *Queries) CreateConversation(ctx context.Context, arg CreateConversationParams) (Conversation, error) {
@@ -51,8 +51,8 @@ WHERE ("memberIdOne" = $1 AND "memberIdTwo" = $2)
 `
 
 type GetConversationByMembersParams struct {
-	MemberIdOne int64 `db:"memberIdOne"`
-	MemberIdTwo int64 `db:"memberIdTwo"`
+	MemberIdOne string `db:"memberIdOne"`
+	MemberIdTwo string `db:"memberIdTwo"`
 }
 
 func (q *Queries) GetConversationByMembers(ctx context.Context, arg GetConversationByMembersParams) (Conversation, error) {
@@ -74,7 +74,7 @@ SELECT id, "memberIdOne", "memberNameOne", "memberIdTwo", "memberNameTwo", "crea
 WHERE "memberIdOne" = $1 OR "memberIdTwo" = $1
 `
 
-func (q *Queries) GetConversationsByMemberId(ctx context.Context, memberidone int64) ([]Conversation, error) {
+func (q *Queries) GetConversationsByMemberId(ctx context.Context, memberidone string) ([]Conversation, error) {
 	rows, err := q.db.QueryContext(ctx, getConversationsByMemberId, memberidone)
 	if err != nil {
 		return nil, err
@@ -102,4 +102,21 @@ func (q *Queries) GetConversationsByMemberId(ctx context.Context, memberidone in
 		return nil, err
 	}
 	return items, nil
+}
+
+const updateConversationMemberName = `-- name: UpdateConversationMemberName :exec
+UPDATE "conversation"
+SET "memberNameOne" = $2, "memberNameTwo" = $3
+WHERE "id" = $1
+`
+
+type UpdateConversationMemberNameParams struct {
+	ID            int64  `db:"id"`
+	MemberNameOne string `db:"memberNameOne"`
+	MemberNameTwo string `db:"memberNameTwo"`
+}
+
+func (q *Queries) UpdateConversationMemberName(ctx context.Context, arg UpdateConversationMemberNameParams) error {
+	_, err := q.db.ExecContext(ctx, updateConversationMemberName, arg.ID, arg.MemberNameOne, arg.MemberNameTwo)
+	return err
 }
