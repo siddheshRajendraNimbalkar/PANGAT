@@ -10,12 +10,14 @@ import (
 )
 
 type Conversation struct {
-	ID            int64     `db:"id"`
-	MemberIdOne   string    `db:"memberIdOne"`
-	MemberNameOne string    `db:"memberNameOne"`
-	MemberIdTwo   string    `db:"memberIdTwo"`
-	MemberNameTwo string    `db:"memberNameTwo"`
-	CreatedAt     time.Time `db:"createdAt"`
+	ID             int64     `db:"id"`
+	MemberIdOne    string    `db:"memberIdOne"`
+	MemberNameOne  string    `db:"memberNameOne"`
+	MemberIdTwo    string    `db:"memberIdTwo"`
+	MemberNameTwo  string    `db:"memberNameTwo"`
+	MemberImageOne string    `db:"memberImageOne"`
+	MemberImageTwo string    `db:"memberImageTwo"`
+	CreatedAt      time.Time `db:"createdAt"`
 }
 
 type ConversationMessage struct {

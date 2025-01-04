@@ -16,6 +16,8 @@ CREATE TABLE "conversation" (
   "memberNameOne" VARCHAR NOT NULL,
   "memberIdTwo" VARCHAR NOT NULL,
   "memberNameTwo" VARCHAR NOT NULL,
+  "memberImageOne" VARCHAR NOT NULL,
+  "memberImageTwo" VARCHAR NOT NULL,
   "createdAt" timestamptz NOT NULL DEFAULT now()
 );
 

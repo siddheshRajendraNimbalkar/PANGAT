@@ -17,7 +17,6 @@ const deleteServerChannel = async(channelId:any) => {
         if(!channel){
             return {success:false,message:"channel not found"}
         }
-        console.log(channel.name)
         if(channel.name.toLocaleLowerCase() == "general"){
             return {success:false,message:"You can't delete general channel"}
         }

@@ -1,29 +1,33 @@
 package api
 
 import (
-	"log"
-
 	"github.com/gin-gonic/gin"
-	socketio "github.com/googollee/go-socket.io"
 	db "github.com/siddheshRajendraNimbalkar/PANGAT/GO/db/sqlc"
 )
 
 type Server struct {
 	store  *db.Queries
 	router *gin.Engine
-	socket *socketio.Server
 }
 
 func NewServer(store *db.Queries) *Server {
 	server := &Server{store: store}
 	router := gin.Default()
 
-	router.POST("/conversation", server.createConversation)
+	router.Use(func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-	if err := server.setupSocketServer(); err != nil {
-		log.Fatal("[Socket Error ]:", err)
-	}
-	router.GET("/socket/*any", gin.WrapH(server.socket))
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+		c.Next()
+	})
+
+	router.POST("/conversation", server.createConversation)
 
 	server.router = router
 	return server

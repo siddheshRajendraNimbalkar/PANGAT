@@ -9,7 +9,6 @@ import React from "react"
 const layout = async({children,params}:{children:React.ReactNode,params:{channelsId:string}}) => {
 
    const server = await findServerByParams(params)
-   console.log(server.found)
 
     if(!server.found){
         return redirect('/')

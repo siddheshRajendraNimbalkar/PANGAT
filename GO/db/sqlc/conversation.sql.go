@@ -11,17 +11,19 @@ import (
 )
 
 const createConversation = `-- name: CreateConversation :one
-INSERT INTO "conversation" ("memberIdOne", "memberNameOne", "memberIdTwo", "memberNameTwo", "createdAt")
-VALUES ($1, $2, $3, $4, $5)
-RETURNING id, "memberIdOne", "memberNameOne", "memberIdTwo", "memberNameTwo", "createdAt"
+INSERT INTO "conversation" ("memberIdOne", "memberNameOne", "memberIdTwo", "memberNameTwo", "memberImageOne", "memberImageTwo", "createdAt")
+VALUES ($1, $2, $3, $4, $5, $6, $7)
+RETURNING id, "memberIdOne", "memberNameOne", "memberIdTwo", "memberNameTwo", "memberImageOne", "memberImageTwo", "createdAt"
 `
 
 type CreateConversationParams struct {
-	MemberIdOne   string    `db:"memberIdOne"`
-	MemberNameOne string    `db:"memberNameOne"`
-	MemberIdTwo   string    `db:"memberIdTwo"`
-	MemberNameTwo string    `db:"memberNameTwo"`
-	CreatedAt     time.Time `db:"createdAt"`
+	MemberIdOne    string    `db:"memberIdOne"`
+	MemberNameOne  string    `db:"memberNameOne"`
+	MemberIdTwo    string    `db:"memberIdTwo"`
+	MemberNameTwo  string    `db:"memberNameTwo"`
+	MemberImageOne string    `db:"memberImageOne"`
+	MemberImageTwo string    `db:"memberImageTwo"`
+	CreatedAt      time.Time `db:"createdAt"`
 }
 
 func (q *Queries) CreateConversation(ctx context.Context, arg CreateConversationParams) (Conversation, error) {
@@ -30,6 +32,8 @@ func (q *Queries) CreateConversation(ctx context.Context, arg CreateConversation
 		arg.MemberNameOne,
 		arg.MemberIdTwo,
 		arg.MemberNameTwo,
+		arg.MemberImageOne,
+		arg.MemberImageTwo,
 		arg.CreatedAt,
 	)
 	var i Conversation
@@ -39,13 +43,15 @@ func (q *Queries) CreateConversation(ctx context.Context, arg CreateConversation
 		&i.MemberNameOne,
 		&i.MemberIdTwo,
 		&i.MemberNameTwo,
+		&i.MemberImageOne,
+		&i.MemberImageTwo,
 		&i.CreatedAt,
 	)
 	return i, err
 }
 
 const getConversationByMembers = `-- name: GetConversationByMembers :one
-SELECT id, "memberIdOne", "memberNameOne", "memberIdTwo", "memberNameTwo", "createdAt" FROM "conversation"
+SELECT id, "memberIdOne", "memberNameOne", "memberIdTwo", "memberNameTwo", "memberImageOne", "memberImageTwo", "createdAt" FROM "conversation"
 WHERE ("memberIdOne" = $1 AND "memberIdTwo" = $2)
    OR ("memberIdOne" = $2 AND "memberIdTwo" = $1)
 `
@@ -64,13 +70,15 @@ func (q *Queries) GetConversationByMembers(ctx context.Context, arg GetConversat
 		&i.MemberNameOne,
 		&i.MemberIdTwo,
 		&i.MemberNameTwo,
+		&i.MemberImageOne,
+		&i.MemberImageTwo,
 		&i.CreatedAt,
 	)
 	return i, err
 }
 
 const getConversationsByMemberId = `-- name: GetConversationsByMemberId :many
-SELECT id, "memberIdOne", "memberNameOne", "memberIdTwo", "memberNameTwo", "createdAt" FROM "conversation"
+SELECT id, "memberIdOne", "memberNameOne", "memberIdTwo", "memberNameTwo", "memberImageOne", "memberImageTwo", "createdAt" FROM "conversation"
 WHERE "memberIdOne" = $1 OR "memberIdTwo" = $1
 `
 
@@ -89,6 +97,8 @@ func (q *Queries) GetConversationsByMemberId(ctx context.Context, memberidone st
 			&i.MemberNameOne,
 			&i.MemberIdTwo,
 			&i.MemberNameTwo,
+			&i.MemberImageOne,
+			&i.MemberImageTwo,
 			&i.CreatedAt,
 		); err != nil {
 			return nil, err
@@ -102,6 +112,23 @@ func (q *Queries) GetConversationsByMemberId(ctx context.Context, memberidone st
 		return nil, err
 	}
 	return items, nil
+}
+
+const updateConversationMemberImage = `-- name: UpdateConversationMemberImage :exec
+UPDATE "conversation"
+SET "memberImageOne" = $2, "memberImageTwo" = $3
+WHERE "id" = $1
+`
+
+type UpdateConversationMemberImageParams struct {
+	ID             int64  `db:"id"`
+	MemberImageOne string `db:"memberImageOne"`
+	MemberImageTwo string `db:"memberImageTwo"`
+}
+
+func (q *Queries) UpdateConversationMemberImage(ctx context.Context, arg UpdateConversationMemberImageParams) error {
+	_, err := q.db.ExecContext(ctx, updateConversationMemberImage, arg.ID, arg.MemberImageOne, arg.MemberImageTwo)
+	return err
 }
 
 const updateConversationMemberName = `-- name: UpdateConversationMemberName :exec

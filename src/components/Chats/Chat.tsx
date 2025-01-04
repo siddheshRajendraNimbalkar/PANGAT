@@ -1,7 +1,9 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
 import ChatHeader from './ChatHeader'
 import ChatBody from './ChatBody'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
 interface ChatProps {
   id: string,
@@ -22,10 +24,8 @@ interface ChatProps {
   }
 }
 
+const Chat = ({id, profile1, profile2, channel }: ChatProps) => {
 
-
-const Chat = ({ id, profile1, profile2, channel }: ChatProps) => {
-  
   return (
     <div>
       <ChatHeader 
@@ -37,7 +37,13 @@ const Chat = ({ id, profile1, profile2, channel }: ChatProps) => {
         yourProfileImage={profile1.imageUrl}
         channelProfileImage={channel.imageUrl}
       />
-      <ChatBody />
+
+      <ChatBody 
+        id={id} 
+        profile1={profile1}
+        profile2={profile2}
+        channel={channel}
+      />
     </div>
   )
 }

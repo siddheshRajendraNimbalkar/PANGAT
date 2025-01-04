@@ -16,7 +16,6 @@ const currentUser = async() => {
     if(!user){
         return false
     }
-    console.log(user)
     return user
 }
 export default currentUser

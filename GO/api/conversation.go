@@ -8,10 +8,12 @@ import (
 )
 
 type createConversationRequest struct {
-	MemberIdOne   string `json:"memberIdOne" binding:"required"`
-	MemberIdTwo   string `json:"memberIdTwo" binding:"required"`
-	MemberNameOne string `json:"memberNameOne" binding:"required"`
-	MemberNameTwo string `json:"memberNameTwo" binding:"required"`
+	MemberIdOne    string `json:"memberIdOne" binding:"required"`
+	MemberIdTwo    string `json:"memberIdTwo" binding:"required"`
+	MemberNameOne  string `json:"memberNameOne" binding:"required"`
+	MemberNameTwo  string `json:"memberNameTwo" binding:"required"`
+	MemberImageOne string `json:"memberImageOne" binding:"required"`
+	MemberImageTwo string `json:"memberImageTwo" binding:"required"`
 }
 
 func (server *Server) createConversation(ctx *gin.Context) {
@@ -50,6 +52,22 @@ func (server *Server) createConversation(ctx *gin.Context) {
 				return
 			}
 		}
+
+		if conversation.MemberImageOne != req.MemberImageOne || conversation.MemberImageTwo != req.MemberImageTwo {
+			updateImageArg := db.UpdateConversationMemberImageParams{
+				ID:             conversation.ID,
+				MemberImageOne: req.MemberImageOne,
+				MemberImageTwo: req.MemberImageTwo,
+			}
+			err := server.store.UpdateConversationMemberImage(ctx, updateImageArg)
+			if err != nil {
+				ctx.JSON(http.StatusInternalServerError, gin.H{
+					"success": false,
+					"error":   err.Error(),
+				})
+				return
+			}
+		}
 		ctx.JSON(http.StatusOK, gin.H{
 			"success": true,
 			"data":    conversation,
@@ -59,10 +77,12 @@ func (server *Server) createConversation(ctx *gin.Context) {
 	}
 
 	createArg := db.CreateConversationParams{
-		MemberIdOne:   req.MemberIdOne,
-		MemberNameOne: req.MemberNameOne,
-		MemberIdTwo:   req.MemberIdTwo,
-		MemberNameTwo: req.MemberNameTwo,
+		MemberIdOne:    req.MemberIdOne,
+		MemberNameOne:  req.MemberNameOne,
+		MemberIdTwo:    req.MemberIdTwo,
+		MemberNameTwo:  req.MemberNameTwo,
+		MemberImageOne: req.MemberImageOne,
+		MemberImageTwo: req.MemberImageTwo,
 	}
 
 	newConversation, err := server.store.CreateConversation(ctx, createArg)

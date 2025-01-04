@@ -10,7 +10,7 @@ const findServerByParams = async (params: { channelsId: string }) => {
         if (!profile) {
             return { redirect: '/sign-in' }
         }
-        console.log(profile.id)
+     
 
         const server = await db.server.findFirst({
             where: {
