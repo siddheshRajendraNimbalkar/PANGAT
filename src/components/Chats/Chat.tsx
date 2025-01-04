@@ -4,6 +4,7 @@ import ChatBody from './ChatBody'
 import axios from 'axios'
 
 interface ChatProps {
+  id: string,
   profile1: {
     id: string,
     username: string,
@@ -23,7 +24,7 @@ interface ChatProps {
 
 
 
-const Chat = ({ profile1, profile2, channel }: ChatProps) => {
+const Chat = ({ id, profile1, profile2, channel }: ChatProps) => {
   
   return (
     <div>

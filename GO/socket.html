@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #messages {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+        }
+        button {
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="messages"></div>
+    <input type="text" id="messageInput" placeholder="Type a message..." onkeypress="handleKeyPress(event)">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        let socket;
+        let reconnectAttempts = 0;
+        const maxReconnectAttempts = 5;
+
+        // Initialize WebSocket connection
+        function initializeWebSocket() {
+            socket = new WebSocket('ws://0.0.0.0:8080/socket/321');
+
+            // Connection opened
+            socket.addEventListener('open', function () {
+                console.log('Connected to WebSocket server');
+            });
+            // Listen for messages
+            socket.addEventListener('chat message', function (event) {
+                console.log('Message from server:', event.data);
+                appendMessage('Received: ' + sanitize(event.data));
+            });
+
+            // Connection closed
+            socket.addEventListener('close', function () {
+                console.log('Disconnected from server');
+                appendMessage('Disconnected from server. Reconnecting...');
+                reconnectWebSocket();
+            });
+
+            // Connection error
+            socket.addEventListener('error', function (event) {
+                console.error('WebSocket error:', event);
+                appendMessage('Error: Connection error');
+            });
+        }
+
+        // Reconnect WebSocket
+        function reconnectWebSocket() {
+            if (reconnectAttempts < maxReconnectAttempts) {
+                setTimeout(() => {
+                    console.log('Reconnecting...');
+                    reconnectAttempts++;
+                    initializeWebSocket();
+                }, 3000);
+            } else {
+                appendMessage('Max reconnection attempts reached.');
+            }
+        }
+
+        // Send message
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            if (message && socket.readyState === WebSocket.OPEN) {
+                socket.send(message);
+                appendMessage('Sent: ' + sanitize(message));
+                input.value = '';
+            } else {
+                appendMessage('Unable to send: WebSocket is not connected');
+            }
+        }
+
+        // Handle Enter key press
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // Append message to the page
+        function appendMessage(message) {
+            const messagesDiv = document.getElementById('messages');
+            const messageElement = document.createElement('div');
+            messageElement.textContent = message;
+            messagesDiv.appendChild(messageElement);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto-scroll to the latest message
+        }
+
+        // Sanitize user input to prevent XSS
+        function sanitize(str) {
+            const tempDiv = document.createElement('div');
+            tempDiv.textContent = str;
+            return tempDiv.innerHTML;
+        }
+
+        // Initialize WebSocket on page load
+        initializeWebSocket();
+    </script>
+</body>
+</html>

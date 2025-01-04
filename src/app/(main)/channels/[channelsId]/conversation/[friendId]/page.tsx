@@ -37,7 +37,7 @@ const Page = async ({ params }: { params: { friendId: string; channelsId: string
   if (!channel) {
     return <RedirectToSignIn redirectUrl="/" />;
   }
-  
+  var conversationId;
   try {
     const res = await axios.post(`${process.env.GOSERVER}/conversation`, {
       channelId: channel.id,
@@ -47,8 +47,10 @@ const Page = async ({ params }: { params: { friendId: string; channelsId: string
       memberNameTwo: profile2.name,
     });
 
-    if (res.data.success == true) {
-      console.log(res.data.data);
+    if (res.data.success == false) {
+      return <div>Error in creating/retrieving conversation</div>
+    }else if (res.data.success == true) {
+      conversationId = res.data.data.id;
     }
   } catch (err) {
     console.error('Error in creating/retrieving conversation:', err)
@@ -58,6 +60,7 @@ const Page = async ({ params }: { params: { friendId: string; channelsId: string
   return (
     <div className='h-full bg-zinc-100 text-zinc-800 dark:bg-[#303339] dark:text-[#8C8C90]'>
       <Chat 
+        id={conversationId}
         profile1={{
           id: profile1.id,
           username: profile1.name,
