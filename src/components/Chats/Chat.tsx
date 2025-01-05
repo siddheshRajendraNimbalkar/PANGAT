@@ -2,8 +2,6 @@
 import React, { useEffect, useState } from 'react'
 import ChatHeader from './ChatHeader'
 import ChatBody from './ChatBody'
-import axios from 'axios'
-import { useRouter } from 'next/navigation'
 
 interface ChatProps {
   id: string,
