@@ -1,6 +1,6 @@
 -- name: CreateMessage :one
-INSERT INTO "message" ("content", "fileUrl", "memberId", "channelId", "deleted", "deletedAt", "createdAt", "updatedAt")
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+INSERT INTO "message" ("content","roomId", "fileUrl", "memberId", "channelId", "deleted", "deletedAt", "createdAt", "updatedAt")
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 RETURNING *;
 
 -- name: GetMessagesByMemberId :many
@@ -24,3 +24,10 @@ WHERE "id" = $2;
 -- name: GetMessageById :one
 SELECT * FROM "message"
 WHERE "id" = $1;
+
+-- name: GetAllMessageByRoomId :many
+SELECT * FROM "message"
+WHERE "roomId" = $1
+ORDER BY "createdAt" ASC;
+
+

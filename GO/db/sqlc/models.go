@@ -33,6 +33,7 @@ type ConversationMessage struct {
 
 type Message struct {
 	ID        int64          `db:"id"`
+	RoomId    int64          `db:"roomId"`
 	Content   string         `db:"content"`
 	FileUrl   sql.NullString `db:"fileUrl"`
 	MemberId  string         `db:"memberId"`

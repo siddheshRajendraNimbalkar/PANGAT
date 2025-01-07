@@ -1,6 +1,8 @@
 package main
 
 import (
+	"database/sql"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -8,6 +10,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	_ "github.com/lib/pq"
+	db "github.com/siddheshRajendraNimbalkar/PANGAT/GO/db/sqlc"
+	"github.com/siddheshRajendraNimbalkar/PANGAT/GO/util"
 )
 
 var upgrader = websocket.Upgrader{
@@ -21,15 +26,22 @@ var (
 	rooms     = make(map[string]map[*websocket.Conn]bool)
 )
 
+var dbConn *sql.DB
+
+type CreateMessageProps struct {
+	Content   string         `json:"content" binding:"required"`
+	FileUrl   sql.NullString `json:"fileUrl"`
+	MemberId  string         `json:"memberId" binding:"required"`
+	ChannelId string         `json:"channelId" binding:"required"`
+	RoomId    int64          `json:"roomId" binding:"required"`
+}
+
 func broadcastMessage(roomID string, sender *websocket.Conn, messageType int, message []byte) {
 	clientsMu.Lock()
 	defer clientsMu.Unlock()
 
 	if clients, exists := rooms[roomID]; exists {
 		for client := range clients {
-			if client == sender {
-				continue
-			}
 			if err := client.WriteMessage(messageType, message); err != nil {
 				log.Printf("[Socket Error]: %v", err)
 				client.Close()
@@ -42,13 +54,30 @@ func broadcastMessage(roomID string, sender *websocket.Conn, messageType int, me
 	}
 }
 
+func initDB() *sql.DB {
+	config, err := util.LoadConfig("../")
+	if err != nil {
+		log.Fatal("cannot load config:", err)
+	}
+	dbConn, err = sql.Open(config.DBDriver, config.DBSource)
+	if err != nil {
+		log.Fatal("cannot connect to db:", err)
+	}
+	if err := dbConn.Ping(); err != nil {
+		log.Fatal("cannot ping db:", err)
+	}
+	return dbConn
+}
+
 func main() {
+	dbConn = initDB()
+	store := db.New(dbConn)
 	r := gin.Default()
 
 	r.GET("/conversation/:id", func(c *gin.Context) {
 		roomID := c.Param("id")
 		if roomID == "" {
-			fmt.Println("[-----------------Room ID-----------------------------]", roomID)
+			c.JSON(http.StatusBadRequest, gin.H{"success": false, "error": "Room ID is required"})
 			return
 		}
 
@@ -87,7 +116,31 @@ func main() {
 				log.Printf("[Socket Error]: %v", err)
 				break
 			}
-			log.Printf("Message Received in room %s from %v: %s", roomID, conn.RemoteAddr(), message)
+
+			// Parse the incoming WebSocket message as JSON
+			var req CreateMessageProps
+			if err := json.Unmarshal(message, &req); err != nil {
+				log.Printf("Error parsing message: %v", err)
+				conn.WriteJSON(gin.H{"success": false, "error": "Invalid message format"})
+				continue
+			}
+
+			// Store the message in the database
+			params := db.CreateMessageParams{
+				Content:   req.Content,
+				FileUrl:   req.FileUrl,
+				MemberId:  req.MemberId,
+				ChannelId: req.ChannelId,
+				RoomId:    req.RoomId,
+			}
+
+			if _, err := store.CreateMessage(c, params); err != nil {
+				log.Printf("Error creating message: %v", err)
+				conn.WriteJSON(gin.H{"success": false, "error": "Error storing message in database"})
+				continue
+			}
+
+			// Broadcast the message to all clients in the room
 			broadcastMessage(roomID, conn, messageType, message)
 		}
 	})
