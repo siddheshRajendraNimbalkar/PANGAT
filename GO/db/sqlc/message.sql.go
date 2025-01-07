@@ -19,7 +19,7 @@ RETURNING id, "roomId", content, "fileUrl", "memberId", "channelId", deleted, "d
 
 type CreateMessageParams struct {
 	Content   string         `db:"content"`
-	RoomId    int64          `db:"roomId"`
+	RoomId    string         `db:"roomId"`
 	FileUrl   sql.NullString `db:"fileUrl"`
 	MemberId  string         `db:"memberId"`
 	ChannelId string         `db:"channelId"`
@@ -74,7 +74,7 @@ WHERE "roomId" = $1
 ORDER BY "createdAt" ASC
 `
 
-func (q *Queries) GetAllMessageByRoomId(ctx context.Context, roomid int64) ([]Message, error) {
+func (q *Queries) GetAllMessageByRoomId(ctx context.Context, roomid string) ([]Message, error) {
 	rows, err := q.db.QueryContext(ctx, getAllMessageByRoomId, roomid)
 	if err != nil {
 		return nil, err

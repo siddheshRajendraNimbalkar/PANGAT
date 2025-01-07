@@ -101,7 +101,7 @@ const Page = async ({ params }: { params: { friendId: string; channelsId: string
   return (
     <div className='h-full bg-zinc-100 text-zinc-800 dark:bg-[#303339] dark:text-[#8C8C90]'>
       <Chat
-        id={conversationId}
+        id={conversationId.toString()}
         profile1={{
           id: profile1.id,
           username: profile1.name,

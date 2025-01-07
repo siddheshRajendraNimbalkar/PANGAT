@@ -31,9 +31,30 @@ type ConversationMessage struct {
 	UpdatedAt      sql.NullTime   `db:"updatedAt"`
 }
 
+type Group struct {
+	ID        int64     `db:"id"`
+	GroupId   string    `db:"groupId"`
+	UserId    string    `db:"userId"`
+	CreatedAt time.Time `db:"createdAt"`
+}
+
+type GroupMessage struct {
+	ID          int64          `db:"id"`
+	GroupId     string         `db:"groupId"`
+	Content     string         `db:"content"`
+	FileUrl     sql.NullString `db:"fileUrl"`
+	MemberId    string         `db:"memberId"`
+	MemberImage string         `db:"memberImage"`
+	ChannelId   string         `db:"channelId"`
+	Deleted     sql.NullBool   `db:"deleted"`
+	DeletedAt   sql.NullTime   `db:"deletedAt"`
+	CreatedAt   time.Time      `db:"createdAt"`
+	UpdatedAt   sql.NullTime   `db:"updatedAt"`
+}
+
 type Message struct {
 	ID        int64          `db:"id"`
-	RoomId    int64          `db:"roomId"`
+	RoomId    string         `db:"roomId"`
 	Content   string         `db:"content"`
 	FileUrl   sql.NullString `db:"fileUrl"`
 	MemberId  string         `db:"memberId"`

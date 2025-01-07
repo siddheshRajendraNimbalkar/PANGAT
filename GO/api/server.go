@@ -29,6 +29,7 @@ func NewServer(store *db.Queries) *Server {
 
 	router.POST("/conversation", server.createConversation)
 	router.GET("/message/:id", server.putAllMessage)
+	router.POST("/group", server.createGroup)
 
 	server.router = router
 	return server

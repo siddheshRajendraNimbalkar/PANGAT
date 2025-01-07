@@ -1,6 +1,6 @@
 CREATE TABLE "message" (
   "id" bigserial PRIMARY KEY,
-  "roomId" bigserial NOT NULL,
+  "roomId" VARCHAR NOT NULL,
   "content" Text NOT NULL,
   "fileUrl" Text,
   "memberId" VARCHAR NOT NULL,

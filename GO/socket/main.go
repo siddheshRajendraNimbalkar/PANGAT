@@ -29,11 +29,13 @@ var (
 var dbConn *sql.DB
 
 type CreateMessageProps struct {
-	Content   string         `json:"content" binding:"required"`
-	FileUrl   sql.NullString `json:"fileUrl"`
-	MemberId  string         `json:"memberId" binding:"required"`
-	ChannelId string         `json:"channelId" binding:"required"`
-	RoomId    int64          `json:"roomId" binding:"required"`
+	Content     string         `json:"content" binding:"required"`
+	FileUrl     sql.NullString `json:"fileUrl"`
+	MemberId    string         `json:"memberId" binding:"required"`
+	ChannelId   string         `json:"channelId" binding:"required"`
+	MemberImage string         `json:"memberImage" `
+	RoomId      string         `json:"roomId" binding:"required" default:"0"`
+	GroupId     string         `json:"groupId" binding:"required" default:"0"`
 }
 
 func broadcastMessage(roomID string, sender *websocket.Conn, messageType int, message []byte) {
@@ -125,22 +127,41 @@ func main() {
 				continue
 			}
 
-			// Store the message in the database
-			params := db.CreateMessageParams{
-				Content:   req.Content,
-				FileUrl:   req.FileUrl,
-				MemberId:  req.MemberId,
-				ChannelId: req.ChannelId,
-				RoomId:    req.RoomId,
-			}
-
-			if _, err := store.CreateMessage(c, params); err != nil {
-				log.Printf("Error creating message: %v", err)
-				conn.WriteJSON(gin.H{"success": false, "error": "Error storing message in database"})
+			if req.RoomId == "0" && req.GroupId == "0" {
+				conn.WriteJSON(gin.H{"success": false, "error": "Room ID or Group ID is required"})
 				continue
 			}
+			fmt.Println(req)
+			if req.RoomId != "0" && len(req.RoomId) > 0 && req.RoomId[0] != 'g' {
+				params := db.CreateMessageParams{
+					Content:   req.Content,
+					FileUrl:   req.FileUrl,
+					MemberId:  req.MemberId,
+					ChannelId: req.ChannelId,
+					RoomId:    req.RoomId,
+				}
 
-			// Broadcast the message to all clients in the room
+				if _, err := store.CreateMessage(c, params); err != nil {
+					log.Printf("Error creating message: %v", err)
+					conn.WriteJSON(gin.H{"success": false, "error": "Error storing message in database"})
+					continue
+				}
+			} else if req.GroupId != "0" && len(req.RoomId) > 0 || req.GroupId[0] == 'g' {
+				params := db.CreateGroupMessageParams{
+					GroupId:     req.GroupId,
+					Content:     req.Content,
+					FileUrl:     req.FileUrl,
+					MemberId:    req.MemberId,
+					MemberImage: req.MemberImage,
+					ChannelId:   req.ChannelId,
+				}
+
+				if _, err := store.CreateGroupMessage(c, params); err != nil {
+					log.Printf("Error creating message: %v", err)
+					conn.WriteJSON(gin.H{"success": false, "error": "Error storing message in database"})
+					continue
+				}
+			}
 			broadcastMessage(roomID, conn, messageType, message)
 		}
 	})

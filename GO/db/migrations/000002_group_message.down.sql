@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS "groupMessage";
+DROP TABLE IF EXISTS "group";

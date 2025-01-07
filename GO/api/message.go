@@ -1,8 +1,6 @@
 package api
 
 import (
-	"strconv"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,13 +15,7 @@ func (server *Server) putAllMessage(ctx *gin.Context) {
 		return
 	}
 
-	roomIdInt, err := strconv.ParseInt(roomId, 10, 64)
-	if err != nil {
-		ctx.JSON(400, gin.H{"error": "invalid room id"})
-		return
-	}
-
-	messages, err := server.store.GetAllMessageByRoomId(ctx, roomIdInt)
+	messages, err := server.store.GetAllMessageByRoomId(ctx, roomId)
 	if err != nil {
 		ctx.JSON(500, gin.H{"error": "failed to get messages"})
 		return

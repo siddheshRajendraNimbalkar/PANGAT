@@ -5,6 +5,7 @@ import ChatHeader from "./ChatHeader";
 import MessageList from "./MessageList";
 import ChatInput from "./ChatInput";
 import ChatStoreMessage from "./ChatStoreMessage";
+import { group } from "console";
 
 interface ChatBodyProps {
   id: string;
