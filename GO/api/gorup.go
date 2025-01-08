@@ -59,3 +59,19 @@ func (server *Server) createGroup(ctx *gin.Context) {
 		"data":    group,
 	})
 }
+
+func (s Server) putAllGroupMessage(ctx *gin.Context) {
+	groupChatId := ctx.Param("id")
+	if groupChatId == "" {
+		ctx.JSON(400, gin.H{"error": "group chat id is required"})
+		return
+	}
+
+	groupChatMessages, err := s.store.GetGroupMessagesByGroupId(ctx, groupChatId)
+	if err != nil {
+		ctx.JSON(500, gin.H{"error": err.Error(), "message": groupChatMessages, "id": groupChatId})
+		return
+	}
+
+	ctx.JSON(200, gin.H{"success": true, "messages": groupChatMessages})
+}

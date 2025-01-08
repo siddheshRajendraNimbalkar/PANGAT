@@ -7,6 +7,8 @@ import axios from 'axios';
 import currentUser from '@/actions/currentUser';
 import { RedirectToSignIn } from '@clerk/nextjs';
 import Chat from '@/components/Chats/Chat';
+import { ChannelType } from '@prisma/client';
+import { MediaRoom } from '@/components/ui/media-room';
 
 
 const page = async ({ params }: any) => {
@@ -48,13 +50,13 @@ const page = async ({ params }: any) => {
       Not Found
     </div>
   }
-  if (chanel.type != "TEXT") {
-    return <div>
-      <h1>
-        {chanel.type}
-      </h1>
-    </div>
-  } else {
+  if (chanel.type == ChannelType.AUDIO) {
+    return <MediaRoom
+      chatId={chanel.id}
+      video={false}
+      audio={true}
+    />
+  } else if (chanel.type == ChannelType.TEXT) {
     let loading = true;
     try {
       const res= await axios.post(`${process.env.GOSERVER}/group`, {
@@ -116,6 +118,12 @@ const page = async ({ params }: any) => {
       </div>
     }
 
+  } else if (chanel.type == ChannelType.VIDEO) {
+    return <MediaRoom
+      chatId={chanel.id}
+      video={true}
+      audio={true}
+    />
   }
 
 }

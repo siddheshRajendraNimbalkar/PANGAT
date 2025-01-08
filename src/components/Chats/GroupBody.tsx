@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Button } from "../ui/button";
 import { Send } from "lucide-react";
 import Image from "next/image";
+import GroupStoreChat from "./GroupStoreChat";
 
 interface Message {
   content: string;
@@ -112,26 +113,19 @@ const GroupBody: React.FC<ChatBodyProps> = ({ id, profile1, channel }) => {
   return (
     <div>
       <div className="messages flex flex-col p-2 h-[calc(100vh-100px)] bg-[#88BB56] dark:bg-[#383A40]">
-        <div>
-          
-        </div>
-
-
-
+        <GroupStoreChat id={id} profile={profile1} />
         <div className="flex flex-col space-y-4 mt-4 overflow-auto no-scrollbar">
           {messages.map((message, index) => (
             <div
               key={index}
-              className={`flex ${
-                message.memberId === profile1.id ? "justify-end" : "justify-start"
-              }`}
+              className={`flex ${message.memberId === profile1.id ? "justify-end" : "justify-start"
+                }`}
             >
               <div
-                className={`flex items-start space-x-2 max-w-[70%] ${
-                  message.memberId === profile1.id
+                className={`flex items-start space-x-2 max-w-[70%] ${message.memberId === profile1.id
                     ? "flex-row-reverse space-x-reverse"
                     : "flex-row"
-                }`}
+                  }`}
               >
                 <Image
                   src={message.memberImage}
@@ -141,11 +135,10 @@ const GroupBody: React.FC<ChatBodyProps> = ({ id, profile1, channel }) => {
                   className="rounded-full"
                 />
                 <div
-                  className={`p-3 rounded-lg ${
-                    message.memberId === profile1.id
+                  className={`p-3 rounded-lg ${message.memberId === profile1.id
                       ? "bg-[#54883A] dark:bg-blue-600 text-white"
                       : "bg-white dark:bg-white dark:text-zinc-800"
-                  }`}
+                    }`}
                 >
                   <p className="text-bold">{message.content}</p>
                   {message.timestamp && (
