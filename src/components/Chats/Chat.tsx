@@ -4,6 +4,7 @@ import ChatHeader from './ChatHeader'
 import ChatBody from './ChatBody'
 import GroupHearder from './GroupHearder'
 import GroupBody from './GroupBody'
+import { MediaRoom } from '../ui/media-room'
 
 interface ChatProps {
   id: string,
@@ -25,7 +26,7 @@ interface ChatProps {
 }
 
 const Chat = ({ id, profile1, profile2, channel }: ChatProps) => {
-
+  const [call,setCall] = useState<boolean>(false)
   if (profile2 == undefined) {
     return <div>
       <GroupHearder name={channel.name} />
@@ -42,14 +43,26 @@ const Chat = ({ id, profile1, profile2, channel }: ChatProps) => {
           otherProfileImage={profile2.imageUrl}
           yourProfileImage={profile1.imageUrl}
           channelProfileImage={channel.imageUrl}
+          setCall={setCall}
+          call={call}
         />
-
-        <ChatBody
+        {
+          call ?
+          <div className="h-[93vh]">
+            <MediaRoom
+            chatId={id}
+            video={false}
+            audio={true}
+          />
+          </div> :
+          <ChatBody
           id={id}
           profile1={profile1}
           profile2={profile2}
           channel={channel}
         />
+        }
+        
       </div>
     )
   }
