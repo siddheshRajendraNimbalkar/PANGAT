@@ -6,7 +6,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
       <div className="dark:bg-[#1E1F22] dark:text-[#81848F] text-[#1E1F22] bg-[#DBDFE0] hidden md:flex h-full w-[72px] z-30 flex-col fixed inset-y-0">
         <NaveBar />
       </div>
-      <main className="md:pl-[72px] h-full">
+      <main className="md:pl-[72px] h-full overflow-hidden">
         {children}
       </main>
     </div>

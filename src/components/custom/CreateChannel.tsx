@@ -105,7 +105,7 @@ function CreateChannel() {
                                 <FormItem>
                                     <FormLabel>Name</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Discode" {...field} />
+                                        <Input placeholder="Pangat" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

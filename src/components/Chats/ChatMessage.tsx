@@ -38,7 +38,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isSender }) => (
       <div
         className={`p-3 rounded-lg ${
           isSender
-            ? "bg-[#54883A] dark:bg-blue-600 text-white"
+            ? "bg-zinc-300 dark:bg-blue-600 text-white"
             : "bg-white dark:bg-white dark:text-zinc-800"
         }`}
       >

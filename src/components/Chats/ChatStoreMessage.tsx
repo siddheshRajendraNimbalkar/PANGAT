@@ -70,7 +70,7 @@ export default function ChatStoreMessage({ id, profile1, profile2 }: { id: strin
                             />}
                             <div
                                 className={`p-3 rounded-lg ${message.MemberId == profile1.id
-                                    ? "bg-[#54883A] dark:bg-blue-600 text-white"
+                                    ? "bg-zinc-600 dark:bg-blue-600 text-white"
                                     : "bg-white dark:bg-white dark:text-zinc-800"
                                     }`}
                             >

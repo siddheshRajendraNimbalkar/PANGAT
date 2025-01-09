@@ -73,7 +73,7 @@ const ChatBody: React.FC<ChatBodyProps> = ({ id, profile1, profile2, channel }) 
 
   return (
     <div>
-      <div className="messages flex flex-col p-2 h-[calc(100vh-100px)] bg-[#88BB56] dark:bg-[#383A40]">
+      <div className="messages flex flex-col p-2 h-[calc(100vh-100px)] bg-zinc-200 dark:bg-[#383A40]">
         <ChatStoreMessage id={id} profile1={profile1} profile2={profile2} />
         <MessageList messages={messages} currentUserId={profile1.id} />
       </div>

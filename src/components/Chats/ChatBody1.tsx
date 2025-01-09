@@ -131,7 +131,7 @@ const ChatBody1: React.FC<ChatBodyProps> = ({ id, profile1, profile2, channel })
 
   return (
     <div>
-      <div className="messages flex flex-col p-2 h-[calc(100vh-100px)] bg-[#88BB56] dark:bg-[#383A40]">
+      <div className="messages flex flex-col p-2 h-[calc(100vh-100px)] bg-zinc-200 dark:bg-[#383A40]">
         <div>
           <h1 className="text-4xl font-bold text-[#9B6636] dark:text-[#DBDEE1] text-center">
             You are welcome to the chat
@@ -172,7 +172,7 @@ const ChatBody1: React.FC<ChatBodyProps> = ({ id, profile1, profile2, channel })
                 <div
                   className={`p-3 rounded-lg ${
                     message.memberId === profile1.id
-                      ? "bg-[#54883A] dark:bg-blue-600 text-white"
+                      ? "bg-zinc-300 dark:bg-blue-600 text-white"
                       : "bg-white dark:bg-white dark:text-zinc-800"
                   }`}
                 >
@@ -214,7 +214,7 @@ const ChatBody1: React.FC<ChatBodyProps> = ({ id, profile1, profile2, channel })
                 <div
                   className={`p-3 rounded-lg ${
                     message.memberId === profile1.id
-                      ? "bg-[#54883A] dark:bg-blue-600 text-white"
+                      ? "bg-zinc-300 dark:bg-blue-600 text-white"
                       : "bg-white dark:bg-white dark:text-zinc-800"
                   }`}
                 >
@@ -240,7 +240,7 @@ const ChatBody1: React.FC<ChatBodyProps> = ({ id, profile1, profile2, channel })
         />
         <Input
           type="text"
-          className="dark:bg-[#383A40] dark:text-white border-0 bg-[#54883A]"
+          className="dark:bg-[#383A40] dark:text-white border-0 bg-zinc-300"
           placeholder="Type your message here..."
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
@@ -252,7 +252,7 @@ const ChatBody1: React.FC<ChatBodyProps> = ({ id, profile1, profile2, channel })
         />
         <Button
           type="submit"
-          className="dark:bg-blue-500 dark:text-white border-0 bg-[#54883A] ml-2"
+          className="dark:bg-blue-500 dark:text-white border-0 bg-zinc-300 ml-2"
           onClick={sendMessage}
         >
           <Send className="w-4 h-4" />

@@ -22,7 +22,7 @@ const VideoChannel = ({ data }: { data: VideoProps[] }) => {
         <div>
           Video Channels
         </div>
-        <Video className="w-6 h-6 text-green-800 " />
+        <Video className="w-6 h-6 text-zinc-800 " />
       </h1>
       {
         data?.length == 0 ? null :
@@ -34,7 +34,7 @@ const VideoChannel = ({ data }: { data: VideoProps[] }) => {
             >
               <div className="w-full flex justify-start items-center gap-x-2">
                 <div className="w-6 h-6 flex justify-center items-center bg-zinc-300 dark:bg-zinc-800 p-1 rounded-md">
-                  <Video className="w-4 h-4 text-green-800 " />
+                  <Video className="w-4 h-4 text-zinc-800 " />
                 </div>
               <div className='w-full flex justify-between items-center'>
               <div className="text-sm text-zinc-500 dark:text-zinc-400">{video.name}</div>

@@ -56,19 +56,19 @@ export function ManageMembers({ serverId, members }: any) {
                     ?
                     <div className="font-bold flex ">{member.profile.name.substring(0, 9)}
                       {member.role == MemberRole.ADMIN ? <ShieldPlus className="mr-2 text-rose-900" /> : null}
-                      {member.role == MemberRole.MODERATOR ? <ShieldCheck className="mr-2 text-green-900" /> : null}
+                      {member.role == MemberRole.MODERATOR ? <ShieldCheck className="mr-2 text-zinc-900" /> : null}
                     </div>
                     :
                     <div className="font-bold">{member.profile.name}
                       {member.role == MemberRole.ADMIN ? <ShieldPlus className="mr-2 text-rose-900" /> : null}
-                      {member.role == MemberRole.MODERATOR ? <ShieldCheck className="mr-2 text-green-900" /> : null}
+                      {member.role == MemberRole.MODERATOR ? <ShieldCheck className="mr-2 text-zinc-900" /> : null}
                     </div>
                 }
 
                 <div className="flex p-1">
                   {member.role == MemberRole.ADMIN ? <Button>ADMIN</Button> :
                     <DropdownMenu>
-                      <DropdownMenuTrigger><Button className={`${tog2 ? null : "bg-green-900"}`}>{member.role}</Button></DropdownMenuTrigger>
+                      <DropdownMenuTrigger><Button className={`${tog2 ? null : "bg-zinc-900"}`}>{member.role}</Button></DropdownMenuTrigger>
                       <DropdownMenuContent>
                         <DropdownMenuItem>
                           <button onClick={async () => {
@@ -94,7 +94,7 @@ export function ManageMembers({ serverId, members }: any) {
                   }
                   {member.role !== MemberRole.ADMIN
                     ?
-                    <button className={`${tog1 ? "bg-rose-800" : "bg-green-900"} hover:bg-red-900 p-1 rounded-lg font-bold`} onClick={async () => {
+                    <button className={`${tog1 ? "bg-rose-800" : "bg-zinc-900"} hover:bg-red-900 p-1 rounded-lg font-bold`} onClick={async () => {
                       const id = member.id;
                       const response = await RemoveMemberFromServer({ serverId, id })
                       if (response.success == true) {

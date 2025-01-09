@@ -17,7 +17,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   onSendMessage,
   userImage,
 }) => (
-  <div className="flex justify-center items-center p-2 bg-[#7ac853] dark:bg-[#303237] bottom-0">
+  <div className="flex justify-center items-center p-2 bg-zinc-200 dark:bg-[#303237] bottom-0">
     <Image
       src={userImage}
       alt="User Profile"
@@ -27,7 +27,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
     />
     <Input
       type="text"
-      className="dark:bg-[#383A40] dark:text-white border-0 bg-[#54883A]"
+      className="dark:bg-[#383A40] dark:text-white border-0 bg-zinc-300"
       placeholder="Type your message here..."
       value={inputMessage}
       onChange={(e) => setInputMessage(e.target.value)}
@@ -39,7 +39,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
     />
     <Button
       type="submit"
-      className="dark:bg-blue-500 dark:text-white border-0 bg-[#54883A] ml-2"
+      className="dark:bg-blue-500 dark:text-white border-0 bg-blue-600 ml-2"
       onClick={onSendMessage}
     >
       <Send className="w-4 h-4" />

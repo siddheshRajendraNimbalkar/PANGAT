@@ -79,7 +79,7 @@ const GroupStoreChat = ({ id , profile}: { id: string, profile: Profile }) => {
                         />}
                         <div
                             className={`p-3 rounded-lg ${message.MemberId == profile.id
-                                ? "bg-[#54883A] dark:bg-blue-600 text-white"
+                                ? "bg-green-600 dark:bg-blue-600 text-white"
                                 : "bg-white dark:bg-white dark:text-zinc-800"
                                 }`}
                         >

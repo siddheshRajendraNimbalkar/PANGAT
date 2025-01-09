@@ -97,7 +97,7 @@ function ServerSetting({ serverId, serverName, imageUrl }: ServerInfo) {
                                 <FormItem>
                                     <FormLabel>Name</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Discode" {...field} />
+                                        <Input placeholder="PANGAT" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

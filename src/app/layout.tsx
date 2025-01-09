@@ -11,7 +11,7 @@ const roboto = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Discord Clone",
+  title: "PANGAT",
   description: "One Of The Best Social Media Platform",
 };
 
@@ -30,7 +30,7 @@ export default function RootLayout({
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
-            storageKey="discode-theme"
+            storageKey="pangat-theme"
           >
             <EdgeStoreProvider>{children}</EdgeStoreProvider>
           </ThemeProvider>

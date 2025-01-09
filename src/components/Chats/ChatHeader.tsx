@@ -27,7 +27,7 @@ const ChatHeader = ({
   call,
 }: ChatHeaderProps) => {
   return (
-    <div className="relative flex items-center justify-between p-2 bg-green-200 dark:bg-[#303339] h-12 border-b border-gray-200 dark:border-gray-800">
+    <div className="relative flex items-center justify-between p-2 bg-zic-200 dark:bg-[#303339] h-12 border-b border-gray-200 dark:border-gray-800">
       {/* Left Section */}
       <div className="flex items-center space-x-2">
         <NaveTooll serverName={friendName}>
