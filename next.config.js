@@ -1,12 +1,16 @@
- /** @type {import('next').NextConfig} */
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-    reactStrictMode: false,  
-    images:{
-        domains:[
-            "files.edgestore.dev",
-            "img.clerk.com"
-        ]
-       }
-  }
+    reactStrictMode: false,
+    images: {
+      domains: [
+        "files.edgestore.dev",
+        "img.clerk.com"
+      ]
+    },
+    experimental: {
+      webSocketPort: 0, 
+    },
+  };
   
-  module.exports = nextConfig
+  module.exports = nextConfig;
+  
