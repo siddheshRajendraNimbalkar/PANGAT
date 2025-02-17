@@ -29,15 +29,15 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
           <div className="grid grid-cols-3 gap-6 text-white">
             <div className="text-center p-4 rounded-xl bg-white/10 backdrop-blur-sm">
-              <div className="text-3xl font-bold mb-1">10M+</div>
+              <div className="text-3xl font-bold mb-1">XX+</div>
               <div className="text-sm text-white/80">Members</div>
             </div>
             <div className="text-center p-4 rounded-xl bg-white/10 backdrop-blur-sm">
-              <div className="text-3xl font-bold mb-1">50K+</div>
+              <div className="text-3xl font-bold mb-1">XX+</div>
               <div className="text-sm text-white/80">Communities</div>
             </div>
             <div className="text-center p-4 rounded-xl bg-white/10 backdrop-blur-sm">
-              <div className="text-3xl font-bold mb-1">180+</div>
+              <div className="text-3xl font-bold mb-1">XX+</div>
               <div className="text-sm text-white/80">Countries</div>
             </div>
           </div>

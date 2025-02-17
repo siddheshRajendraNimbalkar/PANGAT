@@ -59,16 +59,48 @@ function CreateChannel() {
     }
 
     return (
-        <Dialog >
+        <Dialog>
             <DialogTrigger asChild>
-                <div>
-                    <Image
-                        src="/discord-icon-256x256-w6icqf4y.webp"
-                        width={50}
-                        height={50}
-                        alt="Picture of the author"
-                    />
-                    <Button>Create Server</Button>
+                <div className="h-screen flex flex-col justify-center items-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
+                    <div className="flex flex-col items-center p-8 rounded-2xl shadow-2xl bg-white dark:bg-red-600/20 backdrop-blur-lg transition-all hover:shadow-xl hover:-translate-y-2">
+                        <div className="mb-6 text-center">
+                            <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
+                                Start Your Journey
+                            </h1>
+                            <p className="text-gray-500 dark:text-gray-300">
+                                Create your own space and connect with friends
+                            </p>
+                        </div>
+
+                        <div className="relative group overflow-hidden rounded-lg shadow-lg">
+                            <Image
+                                src="/one-piece-pictures.jpg"
+                                width={500}
+                                height={300}
+                                alt="Server Illustration"
+                                className="rounded-lg transform group-hover:scale-105 transition-transform duration-300"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                        </div>
+
+                        <Button
+                            className="mt-6 px-8 py-4 text-lg  bg-black dark:hover:bg-slate-950 text-white rounded-full shadow-md transition-all duration-300 hover:scale-105"
+                        >
+                            <span className="drop-shadow-md">Create Server</span>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-5 w-5 ml-2 -mr-1"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                            >
+                                   <path
+                                    fillRule="evenodd"
+                                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                                    clipRule="evenodd"
+                                />
+                            </svg>
+                        </Button>
+                    </div>
                 </div>
             </DialogTrigger>
             <DialogContent >
