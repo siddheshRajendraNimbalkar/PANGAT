@@ -6,10 +6,7 @@ const nextConfig = {
         "files.edgestore.dev",
         "img.clerk.com"
       ]
-    },
-    experimental: {
-      webSocketPort: 0, 
-    },
+    }
   };
   
   module.exports = nextConfig;

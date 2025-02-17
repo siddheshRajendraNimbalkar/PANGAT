@@ -1,26 +1,41 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { AccessToken } from 'livekit-server-sdk';
+import { NextRequest } from "next/server";
+import jwt from "jsonwebtoken";
 
 export async function GET(req: NextRequest) {
-  const room = req.nextUrl.searchParams.get('room');
-  const username = req.nextUrl.searchParams.get('username');
-  if (!room) {
-    return NextResponse.json({ error: 'Missing "room" query parameter' }, { status: 400 });
-  } else if (!username) {
-    return NextResponse.json({ error: 'Missing "username" query parameter' }, { status: 400 });
+  try {
+    const { searchParams } = new URL(req.url);
+    const room = searchParams.get("room");
+    const username = searchParams.get("username");
+
+    if (!room || !username) {
+      return new Response(JSON.stringify({ error: "Missing room or username" }), { status: 400 });
+    }
+
+    if (!process.env.LIVEKIT_API_SECRET || !process.env.LIVEKIT_API_KEY) {
+      return new Response(JSON.stringify({ error: "LIVEKIT API keys are missing" }), { status: 500 });
+    }
+
+    const token = jwt.sign(
+      {
+        video: {
+          room,
+          roomJoin: true,
+          canPublish: true,
+          canSubscribe: true,
+        },
+      },
+      process.env.LIVEKIT_API_SECRET,
+      {
+        algorithm: "HS256",
+        expiresIn: "1h",
+        issuer: process.env.LIVEKIT_API_KEY,
+        subject: username,
+      }
+    );
+
+    return new Response(JSON.stringify({ token }), { status: 200 });
+  } catch (error: any) {
+    console.error("Token Generation Error:", error);
+    return new Response(JSON.stringify({ error: error.message || "Internal Server Error" }), { status: 500 });
   }
-
-  const apiKey = process.env.LIVEKEEPER_API_KEY;
-  const apiSecret = process.env.LIVEKEEPER_SECRET_KEY;
-  const wsUrl = process.env.NEXT_PUBLIC_LIVEKEEPER_URL;
-
-  if (!apiKey || !apiSecret || !wsUrl) {
-    return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 });
-  }
-
-  const at = new AccessToken(apiKey, apiSecret, { identity: username });
-
-  at.addGrant({ room, roomJoin: true, canPublish: true, canSubscribe: true });
-
-  return NextResponse.json({ token: await at.toJwt() });
 }
