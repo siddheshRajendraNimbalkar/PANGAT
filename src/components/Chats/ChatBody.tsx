@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useEffect, useState, useRef, useCallback } from "react";
+import axios from "axios";
 import ChatHeader from "./ChatHeader";
 import MessageList from "./MessageList";
 import ChatInput from "./ChatInput";
 import ChatStoreMessage from "./ChatStoreMessage";
-import { group } from "console";
 
 interface ChatBodyProps {
   id: string;
@@ -32,13 +32,27 @@ const ChatBody: React.FC<ChatBodyProps> = ({ id, profile1, profile2, channel }) 
   const ws = useRef<WebSocket | null>(null);
 
   useEffect(() => {
+    // Fetch old messages from the backend when the component mounts
+    const fetchMessages = async () => {
+      try {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_GOSERVER}/group/${id}`);
+        const fetchedMessages = response.data.messages;
+        setMessages(fetchedMessages);  // Set old messages
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
+    };
+
+    fetchMessages();
+
+    // Set up WebSocket connection for real-time messaging
     ws.current = new WebSocket(`${process.env.NEXT_PUBLIC_WS_GOSOCKET}/conversation/${id}`);
 
     ws.current.onopen = () => console.log(`Connected to WebSocket room: ${id}`);
     ws.current.onmessage = (event) => {
       try {
         const message = JSON.parse(event.data);
-        setMessages((prev) => [...prev, message]);
+        setMessages((prev) => [...prev, message]); // Add new messages from WebSocket
       } catch (error) {
         console.error("Error parsing WebSocket message:", error);
       }
@@ -65,10 +79,10 @@ const ChatBody: React.FC<ChatBodyProps> = ({ id, profile1, profile2, channel }) 
         roomId: id,
       };
 
-      ws.current.send(JSON.stringify(newMessage));
-      setInputMessage("");
+      ws.current.send(JSON.stringify(newMessage)); // Send the message through WebSocket
+      setInputMessage(""); // Clear the input field
     },
-    [inputMessage, profile1, channel]
+    [inputMessage, profile1, channel, id]
   );
 
   return (

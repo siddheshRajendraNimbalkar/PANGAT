@@ -36,7 +36,6 @@ export default function ChatStoreMessage({ id, profile1, profile2 }: { id: strin
             try {
                 const fetchingMessage = await fetch(`${process.env.NEXT_PUBLIC_GOSERVER}/message/${id}`);
                 const data = await fetchingMessage.json();
-                console.log("Fetched messages:", data); // Log the data here
                 setMessages(data.messages);
             } catch (error) {
                 console.error("Error fetching messages:", error);

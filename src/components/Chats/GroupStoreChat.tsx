@@ -39,17 +39,14 @@ const GroupStoreChat = ({ id , profile}: { id: string, profile: Profile }) => {
             try {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_GOSERVER}/group/${id}`)
                 const data = await response.json()
-                console.log(data)
                 if (data.success){
                     setMessages(data.messages)
-                    console.log(messages)
                 }
             } catch (error) {
                 console.error("Error fetching messages:", error)
             }
         }
         fetchMessages()
-        console.log(messages)
 
     },[id])
     
