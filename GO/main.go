@@ -57,7 +57,7 @@ func initDB() *sql.DB {
 	return db
 }
 
-func broadcastMessage(roomID string, sender *websocket.Conn, messageType int, message []byte) {
+func broadcastMessage(roomID string, messageType int, message []byte) {
 	value, ok := clients.Load(roomID)
 	if !ok {
 		return
@@ -154,7 +154,7 @@ func handleSocket(c *gin.Context, store *db.Queries) {
 			}
 		}
 
-		broadcastMessage(roomID, conn, messageType, message)
+		broadcastMessage(roomID, messageType, message)
 	}
 }
 
