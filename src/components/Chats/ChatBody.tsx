@@ -37,7 +37,7 @@ const ChatBody: React.FC<ChatBodyProps> = ({ id, profile1, profile2, channel }) 
       try {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_GOSERVER}/group/${id}`);
         const fetchedMessages = response.data.messages;
-        setMessages(fetchedMessages);  // Set old messages
+        setMessages(fetchedMessages);  
       } catch (error) {
         console.error("Error fetching messages:", error);
       }
@@ -45,14 +45,14 @@ const ChatBody: React.FC<ChatBodyProps> = ({ id, profile1, profile2, channel }) 
 
     fetchMessages();
 
-    // Set up WebSocket connection for real-time messaging
+
     ws.current = new WebSocket(`${process.env.NEXT_PUBLIC_WS_GOSOCKET}/conversation/${id}`);
 
     ws.current.onopen = () => console.log(`Connected to WebSocket room: ${id}`);
     ws.current.onmessage = (event) => {
       try {
         const message = JSON.parse(event.data);
-        setMessages((prev) => [...prev, message]); // Add new messages from WebSocket
+        setMessages((prev) => [...prev, message]); 
       } catch (error) {
         console.error("Error parsing WebSocket message:", error);
       }
@@ -79,15 +79,15 @@ const ChatBody: React.FC<ChatBodyProps> = ({ id, profile1, profile2, channel }) 
         roomId: id,
       };
 
-      ws.current.send(JSON.stringify(newMessage)); // Send the message through WebSocket
-      setInputMessage(""); // Clear the input field
+      ws.current.send(JSON.stringify(newMessage)); 
+      setInputMessage(""); 
     },
     [inputMessage, profile1, channel, id]
   );
 
   return (
     <div>
-      <div className="messages flex flex-col p-2 h-[calc(100vh-100px)] bg-zinc-200 dark:bg-[#383A40]">
+      <div className="messages flex flex-col p-2 h-[calc(100vh-100px)] bg-zinc-200 dark:bg-[#383A40] overflow-auto no-scrollbar">
         <ChatStoreMessage id={id} profile1={profile1} profile2={profile2} />
         <MessageList messages={messages} currentUserId={profile1.id} />
       </div>

@@ -37,6 +37,7 @@ const GroupStoreChat = ({ id , profile}: { id: string, profile: Profile }) => {
     useEffect(() => {
         const fetchMessages = async () => {
             try {
+                console.log(`${process.env.NEXT_PUBLIC_GOSERVER}/group/${id}`)
                 const response = await fetch(`${process.env.NEXT_PUBLIC_GOSERVER}/group/${id}`)
                 const data = await response.json()
                 if (data.success){

@@ -13,7 +13,7 @@ interface MessageListProps {
 }
 
 const MessageList: React.FC<MessageListProps> = ({ messages, currentUserId }) => (
-  <div className="flex flex-col space-y-4 mt-4 overflow-auto no-scrollbar">
+  <div className="flex flex-col space-y-4 mt-4 ">
     {messages.map((message, index) => (
       <ChatMessage
         key={index}

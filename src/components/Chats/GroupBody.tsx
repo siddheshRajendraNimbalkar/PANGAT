@@ -57,8 +57,7 @@ const GroupBody: React.FC<ChatBodyProps> = ({ id, profile1, channel }) => {
     ws.current.onmessage = (event: MessageEvent) => {
       try {
         const message: Message = JSON.parse(event.data);
-
-        // Avoid adding duplicate messages (based on timestamp or unique content)
+        console.log(message)
         setMessages((prev) => {
           const isDuplicate = prev.some((m) => m.timestamp === message.timestamp && m.content === message.content);
           return isDuplicate ? prev : [...prev, message];
@@ -93,7 +92,6 @@ const GroupBody: React.FC<ChatBodyProps> = ({ id, profile1, channel }) => {
           groupId: id,
           memberImage: profile1.imageUrl,
         };
-        console.log("newMessage", newMessage);
         ws.current.send(JSON.stringify(newMessage));
         setInputMessage("");
       }
@@ -112,7 +110,7 @@ const GroupBody: React.FC<ChatBodyProps> = ({ id, profile1, channel }) => {
 
   return (
     <div>
-      <div className="messages flex flex-col p-2 h-[calc(100vh-100px)] bg-zinc-300 dark:bg-[#383A40]">
+      <div className="messages flex flex-col p-2 h-[calc(100vh-100px)] bg-zinc-300 dark:bg-[#383A40] overflow-auto no-scrollbar">
         <GroupStoreChat id={id} profile={profile1} />
         <div className="flex flex-col space-y-4 mt-4 overflow-auto no-scrollbar">
           {messages.map((message, index) => (
